@@ -58,4 +58,12 @@ export const MemberQuery = {
     resolve: (parent, params) => getMember(params),
 };
 
+export const MembersQuery = {
+    type: new GraphQLList(MemberType),
+    args: {
+        id: { type: GraphQLString },
+    },
+    resolve: (parent, params) => getMembers(params),
+};
+
 export default () => [MemberType, MemberQuery];

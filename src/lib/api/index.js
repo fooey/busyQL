@@ -42,11 +42,21 @@ export function fetch(relativeURL, params = {}) {
 
 
 export function getOrganization(params) {
-    return fetch(`/organization`, params).then(result => _.first(result));
+    return getOrganizations(params).then(result => _.first(result));
+}
+
+export function getOrganizations(params) {
+    return fetch(`/organization`, params);
 }
 
 export function getMember(params) {
-    return fetch(`/member`, params).then(result => _.first(result));
+	// console.log('getMember', params);
+    return getMembers(params).then(result => _.first(result));
+}
+
+export function getMembers(params) {
+	// console.log('getMembers', params);
+    return fetch(`/member`, params);
 }
 
 

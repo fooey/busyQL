@@ -22,11 +22,78 @@ export { OrganizationType } from 'src/schema/organization';
 
 import {
 	MemberQuery,
+	MembersQuery,
 } from 'src/schema/member';
 
 import {
 	OrganizationQuery,
+	OrganizationsQuery,
 } from 'src/schema/organization';
+
+
+
+
+const RootType = new GraphQLObjectType({
+  name: 'RootType',
+  fields: {
+    organization: OrganizationQuery,
+    organizations: OrganizationsQuery,
+
+    member: MemberQuery,
+    members: MembersQuery,
+    //
+    // match: MatchQuery,
+    // matches: MatchesQuery,
+    //
+    // objective: ObjectiveQuery,
+    // objectives: ObjectivesQuery,
+  }
+});
+
+
+const schema = new GraphQLSchema({ query: RootType });
+export default schema;
+
+
+/*
+
+{
+  organization {
+    ...orgProps
+  }
+  member(id: "e97764da-3ae4-47e2-b897-4b460a5c7bc4") {
+    id
+    first_name
+    last_name
+    organization_id
+    organization {
+      ...orgProps
+    }
+  }
+  # members {
+  #   id
+  #   first_name
+  #   last_name
+  #   organization_id
+  #   organization {
+  #     ...slimOrg
+  #   }
+  # }
+}
+
+fragment orgProps on OrganizationType {
+  organization_name
+  owned_by
+  owner {
+    first_name
+    last_name
+  }
+}
+
+
+ */
+
+
 
 
 // const ObjectiveType = new GraphQLObjectType({
@@ -191,22 +258,3 @@ import {
 // );
 //
 //
-
-
-const RootType = new GraphQLObjectType({
-  name: 'RootType',
-  fields: {
-    organization: OrganizationQuery,
-    member: MemberQuery,
-    //
-    // match: MatchQuery,
-    // matches: MatchesQuery,
-    //
-    // objective: ObjectiveQuery,
-    // objectives: ObjectivesQuery,
-  }
-});
-
-
-const schema = new GraphQLSchema({ query: RootType });
-export default schema;

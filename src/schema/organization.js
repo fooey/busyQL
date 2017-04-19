@@ -14,7 +14,9 @@ import {
 
 import {
 	getOrganization,
+	getOrganizations,
 	getMember,
+	getMembers,
 } from 'src/lib/api';
 
 import { MemberType } from './index';
@@ -44,4 +46,12 @@ export const OrganizationQuery = {
         id: { type: GraphQLString },
     },
     resolve: (parent, params) => getOrganization(params),
+};
+
+export const OrganizationsQuery = {
+    type: new GraphQLList(OrganizationType),
+    args: {
+        id: { type: GraphQLString },
+    },
+    resolve: (parent, params) => getOrganizations(params),
 };
