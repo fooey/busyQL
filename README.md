@@ -53,3 +53,51 @@ fragment memberProps on MemberType {
     position_id
 }
 ```
+
+### result
+
+```
+{
+  "data": {
+    "organization": {
+      "id": "a6735855-8738-44e7-a3e9-403b9c1e4470",
+      "organization_name": "Jason Rushton Enterprises",
+      "owned_by": "92cccae3-2aac-43c2-b69e-fbca7e472118",
+      "updated_on": 1493311251,
+      "created_on": 1456358400,
+      "submitted_on": 1456425889,
+      "deleted_on": null,
+      "owner": {
+        "first_name": "Jason",
+        "last_name": "Rushton",
+        "email": "jasonr@busybusybusy.com",
+        "organization_id": "a6735855-8738-44e7-a3e9-403b9c1e4470",
+        "position_id": "1e65a68c-51fd-49f6-93d0-d87bd0a00aee"
+      }
+    },
+    "memberById": {
+      "first_name": "Jason",
+      "last_name": "Rushton",
+      "email": "jasonr@busybusybusy.com",
+      "organization_id": "a6735855-8738-44e7-a3e9-403b9c1e4470",
+      "position_id": "1e65a68c-51fd-49f6-93d0-d87bd0a00aee",
+      "organization": {
+        "id": "a6735855-8738-44e7-a3e9-403b9c1e4470",
+        "organization_name": "Jason Rushton Enterprises",
+        "owned_by": "92cccae3-2aac-43c2-b69e-fbca7e472118",
+        "updated_on": 1493311251,
+        "created_on": 1456358400,
+        "submitted_on": 1456425889,
+        "deleted_on": null,
+        "owner": {
+          "first_name": "Jason",
+          "last_name": "Rushton",
+          "email": "jasonr@busybusybusy.com",
+          "organization_id": "a6735855-8738-44e7-a3e9-403b9c1e4470",
+          "position_id": "1e65a68c-51fd-49f6-93d0-d87bd0a00aee"
+        }
+      }
+    }
+  }
+}
+```
