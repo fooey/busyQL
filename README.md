@@ -1,6 +1,6 @@
 # busyQL
 
-node based service
+[Node.js](https://nodejs.org/en/) based [GraphQL](http://graphql.org/) wrapper for the [busybusy](https://busybusy.com/) REST API.
 
 
 ## Getting Started
