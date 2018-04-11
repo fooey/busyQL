@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import { ApolloEngine } from 'apollo-engine';
+import cors from 'cors';
 
 import {
 	graphqlExpress,
@@ -37,7 +38,7 @@ engine.listen({
 });
 
 app.use(compression());
-app.use('/graphql', bodyParser.json(), graphqlExpress({
+app.use('/graphql', bodyParser.json(), cors(), graphqlExpress({
 	schema,
     tracing: true,
     cacheControl: true,
