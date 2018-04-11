@@ -2,6 +2,8 @@ import "app-module-path/cwd";
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import compression from 'compression';
+import { ApolloEngine } from 'apollo-engine';
 
 import {
 	graphqlExpress,
@@ -11,10 +13,37 @@ import {
 
 import schema from 'src/schema';
 
+
 const app = express();
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+const GRAPHQL_PORT = process.env.PORT || 4000;
+const ENGINE_API_KEY = process.env.ENGINE_API_KEY || 'service:busyql-dev:TBn_8-iMm6A935TQ7pu0cQ';
+const engine = new ApolloEngine({
+  // apiKey: process.env.ENGINE_API_KEY,
+  apiKey: ENGINE_API_KEY,
+});
+
+// No engine.start() or app.use() required!
+
+// Instead of app.listen():
+engine.listen({
+  port: GRAPHQL_PORT,
+  // graphqlPaths: ['/api/graphql'],
+  expressApp: app,
+  launcherOptions: {
+    startupTimeout: 3000,
+  },
+}, () => {
+  console.log('Listening!');
+});
+
+app.use(compression());
+app.use('/graphql', bodyParser.json(), graphqlExpress({
+	schema,
+    tracing: true,
+    cacheControl: true,
+}));
 app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
-app.listen(4000, () => console.log('Now browse to localhost:4000/graphiql'));
+// app.listen(GRAPHQL_PORT, () => console.log('Now browse to localhost:4000/graphiql'));
 
 /*
 

@@ -16,7 +16,7 @@ export const BASE_URL = `https://api-beta.busybusy.io`;
 const instance = axios.create({
   baseURL: BASE_URL,
   timeout: 1000,
-  headers: {'key-authorization': '9b629157152cba59fef7b5a608f25648af764a7865bff85235f578277a34ed7b'},
+  headers: {'key-authorization': '1b16ce8d8600e3d361c8b91513760bcdaca402afec7a68f01308b392fcf18936'},
   params: {
 	  _version: '3.2',
 	  _debug: true,
@@ -25,7 +25,7 @@ const instance = axios.create({
 });
 
 export function fetch(relativeURL, params = {}) {
-	console.log('relativeURL', relativeURL);
+	console.log('relativeURL', relativeURL, params);
 
     return instance.get(relativeURL, { params })
 		.then(response => {
@@ -51,12 +51,26 @@ export function getOrganizations(params) {
 
 export function getMember(params) {
 	// console.log('getMember', params);
-    return getMembers(params).then(result => _.first(result));
+	const defaultParams = {
+		deleted_on: '_-NULL-_',
+		archived_on: '_-NULL-_',
+	};
+
+	const queryParams = Object.assign({}, params, defaultParams);
+	
+    return getMembers().then(result => _.first(result));
 }
 
 export function getMembers(params) {
 	// console.log('getMembers', params);
-    return fetch(`/member`, params);
+	const defaultParams = {
+		deleted_on: '_-NULL-_',
+		archived_on: '_-NULL-_',
+	};
+
+	const queryParams = Object.assign({}, params, defaultParams);
+	
+    return fetch(`/member`, queryParams);
 }
 
 

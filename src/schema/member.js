@@ -14,6 +14,7 @@ import {
 
 import {
 	getMember,
+	getMembers,
 	getOrganization
 } from 'src/lib/api';
 
