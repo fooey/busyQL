@@ -49,12 +49,12 @@ export const ProjectType = new GraphQLObjectType({
 
 		parent_project: {
 			type: ProjectType,
-			resolve: ({ parent_project_id }) => parent_project_id === null ? null : getProject({ id: parent_project_id }),
+			resolve: ({ parent_project_id }) => (parent_project_id === null) ? null : getProject({ id: parent_project_id }),
 		},
 
 		root_project: {
 			type: ProjectType,
-			resolve: ({ root_project_id }) => getProject({ id: root_project_id }),
+			resolve: ({ root_project_id }) => (root_project_id === null || root_project_id === id) ? null : getProject({ id: root_project_id }),
 		},
 
 		child_projects: {
