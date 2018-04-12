@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import { ApolloEngine } from 'apollo-engine';
+import { printSchema } from 'graphql/utilities/schemaPrinter';
 import cors from 'cors';
 
 import {
@@ -44,7 +45,7 @@ app.use('/graphql', bodyParser.json(), cors(), graphqlExpress({
     cacheControl: true,
 }));
 app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
-// app.listen(GRAPHQL_PORT, () => console.log('Now browse to localhost:4000/graphiql'));
+app.use('/schema', (req, res) => res.type('text/plain').send(printSchema(schema)));
 
 /*
 
