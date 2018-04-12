@@ -14,13 +14,14 @@ import {
 } from 'graphql/type';
 
 import {
+	getMember,
+	getProject,
 	getTimeEntry,
 	getTimeEntries,
 	getOpenTimeEntries,
-} from 'src/lib/api/time-entry';
+} from 'src/lib/api';
 
-import { getMember } from 'src/lib/api/member';
-import { MemberType } from './index';
+import { MemberType, ProjectType } from './index';
 
 
 export const TimeEntryType = new GraphQLObjectType({
@@ -54,10 +55,12 @@ export const TimeEntryType = new GraphQLObjectType({
 			type: MemberType,
 			resolve: ({ member_id }) => getMember({ id: member_id }),
 		},
-		// project: {
-		// 	type: ProjectType,
-		// 	resolve: ({ project_id }) => getProject({ id: project_id }),
-		// },
+
+		project: {
+			type: ProjectType,
+			resolve: ({ project_id }) => getProject({ id: project_id }),
+		},
+
 		// cost_code: {
 		// 	type: CostCodeType,
 		// 	resolve: ({ cost_code_id }) => getCostCode({ id: cost_code_id }),

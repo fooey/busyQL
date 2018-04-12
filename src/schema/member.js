@@ -28,7 +28,7 @@ export const MemberType = new GraphQLObjectType({
     name: 'MemberType',
     fields: () => ({
         id: { type: GraphQLID },
-		member_group_id: { type: GraphQLID },
+        member_group_id: { type: GraphQLID },
         organization_id: { type: GraphQLID },
         position_id: { type: GraphQLID },
 
