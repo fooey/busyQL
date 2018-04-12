@@ -16,12 +16,10 @@ import {
 import {
 	getTimeEntry,
 	getTimeEntries,
-	getMember,
-	// getProject,
-	// getCostCode,
-	// getEquipment,
-} from 'src/lib/api';
+	getOpenTimeEntries,
+} from 'src/lib/api/time-entry';
 
+import { getMember } from 'src/lib/api/member';
 import { MemberType } from './index';
 
 
@@ -71,31 +69,35 @@ export const TimeEntryType = new GraphQLObjectType({
     })
 });
 
+export const TimeEntryArgs = {
+	id: { type: GraphQLID },
+	member_id: { type: GraphQLID },
+	start_time: { type: GraphQLInt },
+	start_time_gt: { type: GraphQLInt },
+	start_time_gte: { type: GraphQLInt },
+	start_time_lt: { type: GraphQLInt },
+	start_time_lte: { type: GraphQLInt },
+	end_time: { type: GraphQLInt },
+	end_time_gt: { type: GraphQLInt },
+	end_time_gte: { type: GraphQLInt },
+	end_time_lt: { type: GraphQLInt },
+	end_time_lte: { type: GraphQLInt },
+};
+
 export const TimeEntryQuery = {
     type: TimeEntryType,
-    args: {
-        id: { type: GraphQLID },
-        member_id: { type: GraphQLID },
-        start_time: { type: GraphQLInt },
-    },
+    args: TimeEntryArgs,
     resolve: (parent, params) => getTimeEntry(params),
 };
 
 export const TimeEntriesQuery = {
     type: new GraphQLList(TimeEntryType),
-    args: {
-        id: { type: GraphQLID },
-        member_id: { type: GraphQLID },
-        start_time: { type: GraphQLInt },
-        start_time_gt: { type: GraphQLInt },
-        start_time_gte: { type: GraphQLInt },
-        start_time_lt: { type: GraphQLInt },
-        start_time_lte: { type: GraphQLInt },
-        end_time: { type: GraphQLInt },
-        end_time_gt: { type: GraphQLInt },
-        end_time_gte: { type: GraphQLInt },
-        end_time_lt: { type: GraphQLInt },
-        end_time_lte: { type: GraphQLInt },
-    },
+    args: TimeEntryArgs,
     resolve: (parent, params) => getTimeEntries(params),
+};
+
+export const OpenTimeEntriesQuery = {
+    type: new GraphQLList(TimeEntryType),
+    args: TimeEntryArgs,
+    resolve: (parent, params) => getOpenTimeEntries(params),
 };

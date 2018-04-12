@@ -10,18 +10,18 @@ export function getTimeEntry(params) {
 }
 
 export function getTimeEntries(params) {
-	// console.log('getTimeEntries', params, Object.keys(params));
+	// console.log('getTimeEntries', params);
 
 	const paramsRemapped = Object.keys(params).reduce((acc, key) => {
 		const operator = _.last(key.split('_'));
-		const val = params[key] === null ? '_-NULL-_' : params[key];
+		const mappedVal = params[key] === null ? '_-NULL-_' : params[key];
 
-		let param = { [key]: val };
+		let param = { [key]: mappedVal };
 
 		if (operators.includes(operator)) {
 			const newKey = _.dropRight(key.split('_')).join('_');
 
-			param = { [`_${operator}[${newKey}]`]: val };
+			param = { [`_${operator}[${newKey}]`]: mappedVal };
 		}
 
 		return Object.assign({}, acc, param);
@@ -34,4 +34,11 @@ export function getTimeEntries(params) {
 	const queryParams = Object.assign({}, paramsRemapped, defaultParams);
 
     return fetch(`/time-entry`, queryParams);
+}
+
+
+export function getOpenTimeEntries(params) {
+	// console.log('getOpenTimeEntries', params);
+
+	return getTimeEntries({... params, end_time: null});
 }

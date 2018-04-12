@@ -14,13 +14,14 @@ import {
 
 import {
 	getMember,
-	getMembers,
-	getOrganization
-} from 'src/lib/api';
+	getMembers
+} from 'src/lib/api/member';
 
-import { OrganizationType } from './index';
+import { getOrganization } from 'src/lib/api/organization';
+import { getTimeEntries, getOpenTimeEntries } from 'src/lib/api/time-entry';
 
-console.log('OrganizationType', OrganizationType);
+import { OrganizationType } from 'src/schema/organization';
+import { TimeEntryType, TimeEntryArgs } from 'src/schema/time-entry';
 
 
 export const MemberType = new GraphQLObjectType({
@@ -47,6 +48,20 @@ export const MemberType = new GraphQLObjectType({
 		organization: {
 			type: OrganizationType,
 			resolve: ({ organization_id }) => getOrganization({ id: organization_id }),
+		},
+
+		timeEntries: {
+		    type: new GraphQLList(TimeEntryType),
+		    args: TimeEntryArgs,
+			resolve: ({ id }, args) => {
+				console.log('args', args);
+				return getTimeEntries({ member_id: id, ...args });
+			},
+		},
+
+		openTimeEntries: {
+		    type: new GraphQLList(TimeEntryType),
+			resolve: ({ id }) => getOpenTimeEntries({ member_id: id }),
 		},
     })
 });

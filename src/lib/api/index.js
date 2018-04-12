@@ -12,7 +12,7 @@ export const BASE_URL = `https://api-beta.busybusy.io`;
 
 export { getOrganization, getOrganizations } from './organization';
 export { getMember, getMembers } from './member';
-export { getTimeEntry, getTimeEntries } from './time-entry';
+export { getTimeEntry, getTimeEntries, getOpenTimeEntries } from './time-entry';
 
 // export { getMember } from './member';
 
