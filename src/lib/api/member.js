@@ -1,30 +1,20 @@
-import DataLoader from 'dataloader';
-import LRU from 'lru-cache';
+import _ from 'lodash';
 
-import { fetch, CACHE_LONG } from './';
-
-const ENDPOINT_OBJECTIVES = `/v2/wvw/objectives`;
+import { fetch } from 'src/lib/api';
 
 
-export function fetchObjectives(slug) {
-    return fetch(`${ENDPOINT_OBJECTIVES}${slug ? slug : ''}`);
+export function getMember(params) {
+	return getMembers(params).then(result => _.first(result));
 }
 
-export function getObjective(id) {
-    return getObjectives([...id]);
+export function getMembers(params) {
+	// console.log('getMembers', params);
+	const defaultParams = {
+		deleted_on: '_-NULL-_',
+		archived_on: '_-NULL-_',
+	};
+
+	const queryParams = Object.assign({}, params, defaultParams);
+
+    return fetch(`/member`, queryParams);
 }
-
-export function getObjectives(ids) {
-	ids = Array.isArray(ids) ? ids : [].concat(ids);
-
-	if (ids.indexOf('all') !== -1) {
-		return fetchObjectives().then(ids => objectivesLoader.loadMany(ids));
-	} else {
-		return objectivesLoader.loadMany(ids);
-	}
-}
-
-export const objectivesLoader = new DataLoader(
-    ids => fetchObjectives(`?ids=${ids}`),
-    { cacheMap: LRU({ maxAge: CACHE_LONG })}
-);

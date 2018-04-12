@@ -26,10 +26,10 @@ console.log('OrganizationType', OrganizationType);
 export const MemberType = new GraphQLObjectType({
     name: 'MemberType',
     fields: () => ({
-        id: { type: GraphQLString },
-		member_group_id: { type: GraphQLString },
-        organization_id: { type: GraphQLString },
-        position_id: { type: GraphQLString },
+        id: { type: GraphQLID },
+		member_group_id: { type: GraphQLID },
+        organization_id: { type: GraphQLID },
+        position_id: { type: GraphQLID },
 
         first_name: { type: GraphQLString },
         last_name: { type: GraphQLString },
@@ -54,7 +54,7 @@ export const MemberType = new GraphQLObjectType({
 export const MemberQuery = {
     type: MemberType,
     args: {
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
     },
     resolve: (parent, params) => getMember(params),
 };
@@ -62,7 +62,7 @@ export const MemberQuery = {
 export const MembersQuery = {
     type: new GraphQLList(MemberType),
     args: {
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
     },
     resolve: (parent, params) => getMembers(params),
 };

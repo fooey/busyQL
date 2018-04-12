@@ -25,9 +25,9 @@ import { MemberType } from './index';
 export const OrganizationType = new GraphQLObjectType({
     name: 'OrganizationType',
     fields: () => ({
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
         organization_name: { type: GraphQLString },
-        owned_by: { type: GraphQLString },
+        owned_by: { type: GraphQLID },
         updated_on: { type: GraphQLInt },
         created_on: { type: GraphQLInt },
         submitted_on: { type: GraphQLInt },
@@ -43,7 +43,7 @@ export const OrganizationType = new GraphQLObjectType({
 export const OrganizationQuery = {
     type: OrganizationType,
     args: {
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
     },
     resolve: (parent, params) => getOrganization(params),
 };
@@ -51,7 +51,7 @@ export const OrganizationQuery = {
 export const OrganizationsQuery = {
     type: new GraphQLList(OrganizationType),
     args: {
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
     },
     resolve: (parent, params) => getOrganizations(params),
 };

@@ -10,6 +10,10 @@ export const CACHE_SHORT = 1000 * 5;
 
 export const BASE_URL = `https://api-beta.busybusy.io`;
 
+export { getOrganization, getOrganizations } from './organization';
+export { getMember, getMembers } from './member';
+export { getTimeEntry, getTimeEntries } from './time-entry';
+
 // export { getMember } from './member';
 
 
@@ -25,12 +29,13 @@ const instance = axios.create({
 });
 
 export function fetch(relativeURL, params = {}) {
-	console.log('relativeURL', relativeURL, params);
+	console.log('relativeURL', relativeURL, { params });
 
     return instance.get(relativeURL, { params })
 		.then(response => {
-			console.log('requestURL', _.get(response, 'request._currentRequest.path', 'PATH NOT FOUND'));
+			console.log('requestURL', _.get(response, 'request.path', 'NO PATH INFO'));
 			// console.log('data', response.data);
+			// console.log('request', response.request);
 
 			return _.get(response, 'data.data');
 		})
@@ -38,39 +43,6 @@ export function fetch(relativeURL, params = {}) {
 			console.error(err);
 			return [];
 		});
-}
-
-
-export function getOrganization(params) {
-    return getOrganizations(params).then(result => _.first(result));
-}
-
-export function getOrganizations(params) {
-    return fetch(`/organization`, params);
-}
-
-export function getMember(params) {
-	// console.log('getMember', params);
-	const defaultParams = {
-		deleted_on: '_-NULL-_',
-		archived_on: '_-NULL-_',
-	};
-
-	const queryParams = Object.assign({}, params, defaultParams);
-	
-    return getMembers().then(result => _.first(result));
-}
-
-export function getMembers(params) {
-	// console.log('getMembers', params);
-	const defaultParams = {
-		deleted_on: '_-NULL-_',
-		archived_on: '_-NULL-_',
-	};
-
-	const queryParams = Object.assign({}, params, defaultParams);
-	
-    return fetch(`/member`, queryParams);
 }
 
 

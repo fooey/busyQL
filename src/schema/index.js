@@ -20,15 +20,9 @@ export { MemberType } from 'src/schema/member';
 export { OrganizationType } from 'src/schema/organization';
 
 
-import {
-	MemberQuery,
-	MembersQuery,
-} from 'src/schema/member';
-
-import {
-	OrganizationQuery,
-	OrganizationsQuery,
-} from 'src/schema/organization';
+import { MemberQuery, MembersQuery } from 'src/schema/member';
+import { OrganizationQuery, OrganizationsQuery } from 'src/schema/organization';
+import { TimeEntryQuery, TimeEntriesQuery } from 'src/schema/time-entry';
 
 
 
@@ -41,6 +35,9 @@ const RootType = new GraphQLObjectType({
 
     member: MemberQuery,
     members: MembersQuery,
+
+    timeEntry: TimeEntryQuery,
+    timeEntries: TimeEntriesQuery,
     //
     // match: MatchQuery,
     // matches: MatchesQuery,
