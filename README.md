@@ -102,3 +102,103 @@ fragment memberProps on MemberType {
   }
 }
 ```
+
+### More Queries
+
+```
+query project($id: ID!) {
+  project(id: $id) {
+    ...projectProps
+    
+    parent_project{
+      ...projectProps
+      
+      parent_project{
+        ...projectProps
+        
+        parent_project{
+          ...projectProps
+        }
+      }
+    }
+    
+    root_project{
+      ...projectProps
+      
+      child_projects {
+        ...projectProps
+      }
+    }
+  }
+}
+
+fragment projectProps on ProjectType {
+    title
+    id
+}
+```
+
+```
+query timeEntries($member_id: ID!) {
+  openTimeEntries(
+    member_id: $member_id, 
+    start_time_gte: 1481792400,
+  ) {
+    # id
+    start_time
+    end_time
+    project_id
+    cost_code_id
+    member_id
+    
+    project {
+      id
+      title
+    }
+  }
+}
+```
+
+```
+query member($id: ID!) {
+  member(id: $id) {
+    id
+    first_name
+    last_name
+    email
+    organization_id
+    position_id
+    
+    timeEntries(start_time_gte: 1500000000) {
+      start_time
+      end_time
+      project_id
+      cost_code_id
+      action_type
+    }
+    
+    openTimeEntries {
+      start_time
+      end_time
+      project_id
+      cost_code_id
+      action_type
+    }
+  }
+}
+```
+
+
+```
+{
+  organization {
+    id
+    organization_name
+    owned_by
+    updated_on
+    created_on
+    submitted_on
+    deleted_on
+  }
+}
+```
