@@ -11,8 +11,8 @@
 1. Install Yarn.js ([https://yarnpkg.com/en/docs/install](https://yarnpkg.com/en/docs/install))
 1. Clone repo ([https://github.com/fooey/busyQL.git](https://github.com/fooey/busyQL.git)
 1. Install dependencies, run `yarn install`  
-1. Start in dev mode, run `yarn dev`  
-  - Or, start in server mode, run `yarn start`  
+1. Start in dev mode, run `yarn dev`
+    - Or, start in server mode, run `yarn start`  
 
 Server will start on http://localhost:4000/  
 GraphQL endpoint: http://localhost:4000/graphql  
