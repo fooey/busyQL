@@ -1,22 +1,22 @@
 
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import {
-    GraphQLSchema,
+    // GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    GraphQLFloat,
+    // GraphQLFloat,
     GraphQLList,
     GraphQLID,
-    GraphQLNonNull
+    // GraphQLNonNull
 } from 'graphql/type';
 
 import {
 	getOrganization,
 	getOrganizations,
 	getMember,
-	getMembers,
+	// getMembers,
 } from 'src/lib/api';
 
 import { MemberType } from './index';

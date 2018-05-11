@@ -1,18 +1,8 @@
 
-import Promise from 'bluebird';
-import DataLoader from 'dataloader';
-import LRU from 'lru-cache';
-import _ from 'lodash';
 
 import {
     GraphQLSchema,
     GraphQLObjectType,
-    GraphQLString,
-    GraphQLInt,
-    GraphQLFloat,
-    GraphQLList,
-    GraphQLID,
-    GraphQLNonNull
 } from 'graphql/type';
 
 

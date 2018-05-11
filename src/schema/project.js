@@ -1,15 +1,15 @@
 
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import {
-    GraphQLSchema,
+    // GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    GraphQLFloat,
+    // GraphQLFloat,
     GraphQLList,
     GraphQLID,
-    GraphQLNonNull,
+    // GraphQLNonNull,
 	GraphQLBoolean
 } from 'graphql/type';
 
@@ -54,7 +54,7 @@ export const ProjectType = new GraphQLObjectType({
 
 		root_project: {
 			type: ProjectType,
-			resolve: ({ root_project_id }) => (root_project_id === null || root_project_id === id) ? null : getProject({ id: root_project_id }),
+			resolve: ({ root_project_id, id }) => (root_project_id === null || root_project_id === id) ? null : getProject({ id: root_project_id }),
 		},
 
 		child_projects: {

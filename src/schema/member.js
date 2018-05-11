@@ -1,15 +1,15 @@
 
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import {
-    GraphQLSchema,
+    // GraphQLSchema,
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    GraphQLFloat,
+    // GraphQLFloat,
     GraphQLList,
     GraphQLID,
-    GraphQLNonNull
+    // GraphQLNonNull
 } from 'graphql/type';
 
 import {
@@ -51,8 +51,8 @@ export const MemberType = new GraphQLObjectType({
 		},
 
 		timeEntries: {
-		    type: new GraphQLList(TimeEntryType),
-		    args: TimeEntryArgs,
+			type: new GraphQLList(TimeEntryType),
+			args: TimeEntryArgs,
 			resolve: ({ id }, args) => {
 				console.log('args', args);
 				return getTimeEntries({ member_id: id, ...args });
@@ -60,7 +60,7 @@ export const MemberType = new GraphQLObjectType({
 		},
 
 		openTimeEntries: {
-		    type: new GraphQLList(TimeEntryType),
+			type: new GraphQLList(TimeEntryType),
 			resolve: ({ id }) => getOpenTimeEntries({ member_id: id }),
 		},
     })

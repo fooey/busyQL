@@ -23,10 +23,14 @@
     "lru-cache": "^4.0.2"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-plugin-graphql": "^2.1.1",
     "nodemon": "^1.11.0"
   },
   "scripts": {
     "dev": "nodemon ./src/server.js --exec babel-node",
-    "start": "babel-node ./src/server.js"
+    "start": "babel-node ./src/server.js",
+    "lint": "esw ./src --watch"
   }
 }
