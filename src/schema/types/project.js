@@ -1,4 +1,84 @@
+import _ from 'lodash';
 
+import { fetch } from 'src/lib/api';
+
+
+export function query(params) {
+	return fetch(`/project`, params);
+}
+
+export function getProject(id) {
+	return query({ id }).then(result => _.first(result));
+}
+
+
+function hasParentProject(Project) {
+	return Project.parent_project_id;
+}
+
+// function isRootProject(Project) {
+// 	return Project.root_project_id && Project.root_project_id !== Project.id;
+// }
+
+
+const typeDefs = `
+	type Project {
+		id: ID
+		organization_id: ID
+		parent_project_id: ID
+		title: String,
+		depth: Int
+		image_id: ID
+		root_project_id: ID
+		task_loggable: Boolean
+		time_loggable: Boolean
+		all_access: Boolean
+		archived_on: Int
+		project_group_id: ID
+		updated_on: Int
+		created_on: Int
+		submitted_on: Int
+		deleted_on: Int
+
+		parent_project: Project
+		root_project: Project
+	}
+`;
+
+const queries = `
+	project( id: ID ): Project
+
+	projects(
+		id: ID
+		organization_id: ID
+		parent_project_id: ID
+		root_project_id: ID
+		archived_on: Int
+	): [Project]
+`;
+
+
+const resolvers = {
+	Query: {
+		project: (root, { id }) => getProject(id),
+		projects: (root, params) => query(params),
+	},
+	Project: {
+		parent_project: (Project) => hasParentProject(Project) ? getProject(Project.parent_project_id) : null,
+		root_project: (Project) => hasParentProject(Project) ? getProject(Project.root_project_id) : null,
+	},
+};
+
+
+
+export default {
+	typeDefs,
+	queries,
+	resolvers,
+}
+
+
+/*
 // import _ from 'lodash';
 
 import {
@@ -84,3 +164,4 @@ export const ProjectsQuery = {
     },
     resolve: (parent, params) => getProjects(params),
 };
+*/
