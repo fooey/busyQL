@@ -1,19 +1,17 @@
 import "app-module-path/cwd";
 
-import express from 'express';
-import bodyParser from 'body-parser';
-import compression from 'compression';
 import { ApolloEngine } from 'apollo-engine';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
+
+import express from 'express';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import bodyParser from 'body-parser';
+import compression from 'compression';
 import cors from 'cors';
 
-import {
-	graphqlExpress,
-	graphiqlExpress,
-} from 'graphql-server-express';
 
 
-import schema from 'src/schema';
+import schema from './schema';
 
 
 const app = express();
@@ -24,9 +22,7 @@ const engine = new ApolloEngine({
   apiKey: ENGINE_API_KEY,
 });
 
-// No engine.start() or app.use() required!
 
-// Instead of app.listen():
 engine.listen({
   port: GRAPHQL_PORT,
   // graphqlPaths: ['/api/graphql'],
@@ -35,59 +31,17 @@ engine.listen({
     startupTimeout: 3000,
   },
 }, () => {
-  console.log('Listening!');
+  console.log('GraphQL', 'Listening!');
 });
 
+
 app.use(compression());
+
 app.use('/graphql', bodyParser.json(), cors(), graphqlExpress({
 	schema,
     tracing: true,
     cacheControl: true,
+    context: {},
 }));
 app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
 app.use('/schema', (req, res) => res.type('text/plain').send(printSchema(schema)));
-
-/*
-
-{
-  organization {
-    ...orgProps
-    owner { ...memberProps }
-  }
-  memberById:member(id: "92cccae3-2aac-43c2-b69e-fbca7e472118") {
-    ...memberProps
-
-    organization {
-      ...orgProps
-    	owner {
-        ...memberProps
-      }
-    }
-  }
-  # members:member {
-  #   ...memberProps
-  # }
-}
-
-fragment orgProps on OrganizationType {
-    id
-    organization_name
-    owned_by
-    updated_on
-    created_on
-    submitted_on
-    deleted_on
-}
-fragment memberProps on MemberType {
-    first_name
-    last_name
-    email
-    organization_id
-    position_id
-}
-
-
-
-
-
- */
