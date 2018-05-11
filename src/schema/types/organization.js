@@ -5,12 +5,12 @@ import { fetch } from 'src/lib/api';
 import { getMember, getMembers } from './member';
 
 
-export function query(params) {
-    return fetch(`/organization`, params);
+export function query(params, context) {
+    return fetch(`/organization`, params, context);
 }
 
-export function getOrganization(id) {
-    return query({ id }).then(result => _.first(result));
+export function getOrganization(id, context) {
+    return query({ id }, context).then(result => _.first(result));
 }
 
 
@@ -37,12 +37,12 @@ const queries = `
 
 const resolvers = {
 	Query: {
-		organization: (root, { id }) => getOrganization(id),
-		organizations: (root, params) => query(params),
+		organization: (root, { id }, context) => getOrganization(id, context),
+		organizations: (root, params, context) => query(params, context),
 	},
 	Organization: {
-		owner: (Organization) =>  getMember(Organization.owned_by),
-		members: (Organization) =>  getMembers({ organization_id: Organization.id })
+		owner: (parent, props, context) =>  getMember(parent.owned_by, context),
+		members: (parent, props, context) =>  getMembers({ organization_id: parent.id }, context)
 	},
 };
 

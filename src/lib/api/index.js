@@ -12,9 +12,9 @@ const limiter = new Bottleneck({
 const instance = axios.create({
 	baseURL: BASE_URL,
 	timeout: 10000,
-	headers: {
-		'key-authorization': '1b16ce8d8600e3d361c8b91513760bcdaca402afec7a68f01308b392fcf18936'
-	},
+	// headers: {
+	// 	'key-authorization': '1b16ce8d8600e3d361c8b91513760bcdaca402afec7a68f01308b392fcf18936'
+	// },
 	params: {
 		_version: '3.2',
 		_debug: true,
@@ -22,10 +22,21 @@ const instance = axios.create({
 	}
 });
 
-export function fetch(relativeURL, params = {}) {
-	console.log('relativeURL', relativeURL, {params});
+export function fetch(relativeURL, params = {}, context) {
+	const headers = {
+		'key-authorization': context['key-authorization'],
+		'request-id': context['request-id'],
+		'request-ip': context['request-ip'],
+	};
 
-	return limiter.schedule(() => instance.get(relativeURL, {params})).then(response => {
+	const config = {
+		params,
+		headers,
+	};
+
+	console.log('relativeURL', relativeURL, { config });
+
+	return limiter.schedule(() => instance.get(relativeURL, config)).then(response => {
 		console.log('requestURL', _.get(response, 'request.path', 'NO PATH INFO'));
 		// console.log('data', response.data);
 		// console.log('request', response.request);

@@ -9,7 +9,7 @@ import { getProject } from './project';
 
 const operators = [ 'gt', 'gte', 'lt', 'lte' ];
 
-export function query(params) {
+export function query(params, context) {
 	// console.log('query', params);
 
 	const paramsRemapped = Object.keys(params).reduce((acc, key) => {
@@ -33,17 +33,19 @@ export function query(params) {
 
 	const queryParams = Object.assign({}, paramsRemapped, defaultParams);
 
-    return fetch(`/time-entry`, queryParams);
+	return fetch(`/time-entry`, queryParams, context);
 }
 
 
-export function getTimeEntry(params) {
-	return query(params).then(result => _.first(result));
+export function getTimeEntry(params, context) {
+	return query(params, context).then(result => _.first(result));
 }
 
 
-export function getOpenTimeEntries(params) {
-	return query({... params, end_time: null});
+export function getOpenTimeEntries(customParams, context) {
+	const params = _.merge({}, customParams, { end_time: null });
+
+	return query(params, context);
 }
 
 
@@ -101,13 +103,13 @@ const queries = `
 
 const resolvers = {
 	Query: {
-		timeEntry: (root, { id }) => getTimeEntry(id),
-		timeEntries: (root, params) => query(params),
-		openTimeEntries: (root, params) => getOpenTimeEntries(params),
+		timeEntry: (root, { id }, context) => getTimeEntry(id, context),
+		timeEntries: (root, params, context) => query(params, context),
+		openTimeEntries: (root, params, context) => getOpenTimeEntries(params, context),
 	},
 	TimeEntry: {
-		member: (TimeEntry) =>  getMember(TimeEntry.member_id),
-		project: (TimeEntry) =>  getProject(TimeEntry.project_id),
+		member: (parent, props, context) =>  getMember(parent.member_id, context),
+		project: (parent, props, context) =>  getProject(parent.project_id, context),
 	},
 };
 

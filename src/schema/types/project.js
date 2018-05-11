@@ -3,12 +3,12 @@ import _ from 'lodash';
 import { fetch } from 'src/lib/api';
 
 
-export function query(params) {
-	return fetch(`/project`, params);
+export function query(params, context) {
+	return fetch(`/project`, params, context);
 }
 
-export function getProject(id) {
-	return query({ id }).then(result => _.first(result));
+export function getProject(id, context) {
+	return query({ id }, context).then(result => _.first(result));
 }
 
 
@@ -60,12 +60,12 @@ const queries = `
 
 const resolvers = {
 	Query: {
-		project: (root, { id }) => getProject(id),
-		projects: (root, params) => query(params),
+		project: (root, { id }, context) => getProject(id, context),
+		projects: (root, params, context) => query(params, context),
 	},
 	Project: {
-		parent_project: (Project) => hasParentProject(Project) ? getProject(Project.parent_project_id) : null,
-		root_project: (Project) => hasParentProject(Project) ? getProject(Project.root_project_id) : null,
+		parent_project: (parent, props, context) => hasParentProject(parent) ? getProject(parent.parent_project_id, context) : null,
+		root_project: (parent, props, context) => hasParentProject(parent) ? getProject(parent.root_project_id, context) : null,
 	},
 };
 

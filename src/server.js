@@ -3,11 +3,13 @@ import "app-module-path/cwd";
 import { ApolloEngine } from 'apollo-engine';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 
+import _ from 'lodash';
 import express from 'express';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -37,11 +39,35 @@ engine.listen({
 
 app.use(compression());
 
-app.use('/graphql', bodyParser.json(), cors(), graphqlExpress({
-	schema,
-    tracing: true,
-    cacheControl: true,
-    context: {},
+// app.use('/graphql', (req, res, next) => {
+// 	const keyAuthorization = _.get(req, 'headers.key-authorization');
+// 	const ip = _.get(req, 'ip');
+//
+// 	const root = {
+// 		keyAuthorization,
+// 		ip,
+// 	};
+//
+// 	return next();
+// });
+
+app.use('/graphql', bodyParser.json(), cors(), graphqlExpress(req => {
+	const context = {
+		'key-authorization': _.get(req, 'headers.key-authorization', ''),
+		'request-id': uuidv4(),
+		'request-ip': _.get(req, 'ip'),
+		timestamp: Date.now(),
+	};
+
+	console.log('express', {context});
+
+	return {
+		schema,
+		tracing: true,
+		cacheControl: true,
+		context,
+	};
 }));
+
 app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
 app.use('/schema', (req, res) => res.type('text/plain').send(printSchema(schema)));

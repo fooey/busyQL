@@ -8,19 +8,19 @@ import { query as getTimeEntries, getOpenTimeEntries } from './time-entry';
 
 
 
-export function query(params) {
+export function query(customParams, context) {
 	const defaultParams = {
 		deleted_on: '_-NULL-_',
 		archived_on: '_-NULL-_',
 	};
 
-	const queryParams = Object.assign({}, params, defaultParams);
+	const params = Object.assign({}, customParams, defaultParams);
 
-	return fetch(`/member`, queryParams);
+	return fetch(`/member`, params, context);
 }
 
-export function getMember(id) {
-	return query({ id }).then(result => _.first(result));
+export function getMember(id, context) {
+	return query({ id }, context).then(result => _.first(result));
 }
 
 
@@ -60,13 +60,13 @@ const queries = `
 
 const resolvers = {
 	Query: {
-		member: (root, { id }) => getMember(id),
-		members: (root, params) => query(params),
+		member: (root, { id }, context) => getMember(id, context),
+		members: (root, params, context) => query(params, context),
 	},
 	Member: {
-		organization: (Member) =>  getOrganization(Member.organization_id),
-		timeEntries: (Member) =>  getTimeEntries({ member_id: Member.id }),
-		openTimeEntries: (Member) =>  getOpenTimeEntries({ member_id: Member.id }),
+		organization: (parent, props, context) =>  getOrganization(parent.organization_id, context),
+		timeEntries: (parent, props, context) =>  getTimeEntries({ member_id: parent.id }, context),
+		openTimeEntries: (parent, props, context) =>  getOpenTimeEntries({ member_id: parent.id }, context),
 	},
 };
 

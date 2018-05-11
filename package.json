@@ -22,7 +22,8 @@
     "graphql-tools": "^2.24.0",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
-    "require-all": "^2.2.0"
+    "require-all": "^2.2.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
