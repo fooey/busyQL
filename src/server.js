@@ -51,13 +51,17 @@ app.use(compression());
 // 	return next();
 // });
 
+const TEMPORARY_KeyAuthorization = '9d692a9beb6b2ebf54b153982c12b32c81b81380c4fb44b5756ef6bd673702e9';
+
 app.use('/graphql', bodyParser.json(), cors(), graphqlExpress(req => {
 	const context = {
-		'key-authorization': _.get(req, 'headers.key-authorization', ''),
+		'key-authorization': _.get(req, 'headers.key-authorization', TEMPORARY_KeyAuthorization),
 		'request-id': uuidv4(),
 		'request-ip': _.get(req, 'ip'),
 		timestamp: Date.now(),
 	};
+
+	console.log({context});
 
 	console.log('express', {context});
 
